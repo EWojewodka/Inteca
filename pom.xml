@@ -6,7 +6,7 @@
 
 	<groupId>com.wojewodka</groupId>
 	<artifactId>inteca</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>01</version>
 	<packaging>jar</packaging>
 
 	<name>inteca</name>
@@ -23,7 +23,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>springio</docker.image.prefix>
 	</properties>
 
 	<dependencies>
@@ -73,22 +72,23 @@
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.3.6</version>
+				 <executions>
+				    <execution>
+				      <id>default</id>
+				      <goals>
+				        <goal>build</goal>
+				        <goal>push</goal>
+				      </goals>
+				    </execution>
+				  </executions>
 				<configuration>
-					<repository>wojewodkainteca/inteca</repository>
+					<repository>wojewodkainteca/family</repository>
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>default</id>
-						<phase>install</phase>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
+					<tag>latest</tag>
+					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+ 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
