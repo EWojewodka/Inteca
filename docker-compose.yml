@@ -1,0 +1,30 @@
+version: '2'
+
+services: 
+  database:
+    image: wojewodkainteca/family:database
+    ports: 
+      - 5433:5432
+    networks:
+      - pgsql_net
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: . 
+    depends_on:
+      - database
+    links:
+      - database
+    ports:
+      - 8080:8080
+    networks:
+      - pgsql_net
+      
+
+networks:
+  pgsql_net:
+    driver: bridge
+
+volumes: 
+  pgdata:
