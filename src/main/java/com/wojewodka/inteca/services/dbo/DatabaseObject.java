@@ -1,7 +1,5 @@
 package com.wojewodka.inteca.services.dbo;
 
-import java.util.Map;
-
 import com.wojewodka.inteca.services.repository.Repository;
 
 /**
@@ -13,9 +11,5 @@ import com.wojewodka.inteca.services.repository.Repository;
  */
 public interface DatabaseObject {
 
-	Map<String, Object> getFields();
-
-	Object getField(String columnName);
-	
-	void setField(String name, Object value);
+	int getId();
 }

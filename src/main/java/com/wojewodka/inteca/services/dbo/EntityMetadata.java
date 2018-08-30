@@ -2,6 +2,7 @@ package com.wojewodka.inteca.services.dbo;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -19,7 +20,12 @@ public class EntityMetadata {
 
 	private IdInfo idInfo;
 
-	private Map<String, Field> annotatedEntityFields = new HashMap<>();
+	/**
+	 * It's better way to use a {@link LinkedHashMap} than {@link HashMap}. </br>
+	 * Look at <a href=
+	 * "https://stackoverflow.com/questions/12998568/hashmap-vs-linkedhashmap-performance-in-iteration-over-values">StackOverFlow</a>
+	 */
+	private Map<String, Field> annotatedEntityFields = new LinkedHashMap<>();
 
 	EntityMetadata(Class<?> clazz) {
 		this.clazz = clazz;
@@ -51,6 +57,10 @@ public class EntityMetadata {
 			annotatedEntityFields.put(dbColumn.name(), field);
 		}
 
+	}
+
+	public Class<?> getEntityClass() {
+		return clazz;
 	}
 
 	public String getTableName() {

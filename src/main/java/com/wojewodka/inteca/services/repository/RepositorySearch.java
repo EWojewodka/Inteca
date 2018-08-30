@@ -1,17 +1,21 @@
 package com.wojewodka.inteca.services.repository;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class RepositorySearch {
 
-	private Map<String, Object> whereClause = new HashMap<>();
+	// Reason for use linked hash map is same as in EntityMetadata - easier and more
+	// efficienty for this
+	private Map<String, Object> whereClause = new LinkedHashMap<>();
 
 	private boolean distinct = false;
 
 	private int limit = -1;
 
 	private OrderByDirection orderBy;
+
+	private String orderColumn;
 
 	public boolean isDistinct() {
 		return distinct;
@@ -33,8 +37,13 @@ public class RepositorySearch {
 		return orderBy;
 	}
 
-	public void setOrderBy(OrderByDirection orderBy) {
+	public String getOrderColumn() {
+		return orderColumn;
+	}
+
+	public void setOrderBy(String orderColumn, OrderByDirection orderBy) {
 		this.orderBy = orderBy;
+		this.orderColumn = orderColumn;
 	}
 
 	public Map<String, Object> getWhereClause() {
