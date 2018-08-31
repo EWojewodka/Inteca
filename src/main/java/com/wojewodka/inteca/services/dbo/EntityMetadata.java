@@ -72,7 +72,10 @@ public class EntityMetadata {
 	}
 
 	public Field getFieldForColumn(String columnName) {
-		return annotatedEntityFields.get(columnName);
+		Field result = annotatedEntityFields.get(columnName);
+		if(result == null && columnName.equals(idInfo.columnName))
+			result = idInfo.field;
+		return result;
 	}
 
 	public String getColumnNameForField(Field field) {

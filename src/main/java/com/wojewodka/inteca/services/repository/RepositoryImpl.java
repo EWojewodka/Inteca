@@ -28,7 +28,7 @@ import com.wojewodka.inteca.utils.EntityUtils;
 import com.wojewodka.inteca.utils.StringUtils;
 
 @Service
-public abstract class RepositoryImpl<T extends DatabaseObject> implements Repository<T> {
+public class RepositoryImpl<T extends DatabaseObject> implements Repository<T> {
 
 	@Autowired
 	private DBAWrapper wrapper;
@@ -129,6 +129,7 @@ public abstract class RepositoryImpl<T extends DatabaseObject> implements Reposi
 		wrapper.run(con -> {
 			// We have to replace ? with values if where clause is not empty
 			PreparedStatement stmt = con.prepareStatement(sb.toString());
+			LOGGER.info(sb.toString());
 			if (useWhere) {
 				int i = 1;
 				for (Object obj : whereClause.values()) {
