@@ -1,5 +1,6 @@
 package com.wojewodka.inteca.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -16,6 +17,16 @@ public class DateUtils {
 			format = "yyyy-MM-dd";
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
+	}
+
+	public static Date parseDate(String dateStr, String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		try {
+			return sdf.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

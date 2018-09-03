@@ -1,5 +1,6 @@
 package com.wojewodka.inteca.services.database;
 
+@FunctionalInterface
 public interface DBAWrapper {
 
 	@SuppressWarnings("rawtypes")

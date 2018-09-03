@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import com.wojewodka.inteca.services.database.DBAWrapper;
 import com.wojewodka.inteca.services.database.DatabaseFieldProcessor;
@@ -27,8 +27,8 @@ import com.wojewodka.inteca.utils.CollectionUtils;
 import com.wojewodka.inteca.utils.EntityUtils;
 import com.wojewodka.inteca.utils.StringUtils;
 
-@Service
-public class RepositoryImpl<T extends DatabaseObject> implements Repository<T> {
+@Repository
+public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.inteca.services.repository.Repository<T> {
 
 	@Autowired
 	private DBAWrapper wrapper;
