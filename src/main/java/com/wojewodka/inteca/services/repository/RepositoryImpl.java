@@ -175,7 +175,6 @@ public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.i
 
 		sb.append(" WHERE " + metadata.getIdColumnName() + " = " + entity.getId() + ";");
 		PreparedStatement stmt = connection.prepareStatement(sb.toString());
-
 		stmt.executeUpdate();
 	}
 

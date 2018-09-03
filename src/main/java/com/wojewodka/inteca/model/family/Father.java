@@ -2,6 +2,8 @@ package com.wojewodka.inteca.model.family;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wojewodka.inteca.api.ViewScope;
 import com.wojewodka.inteca.model.request.FatherRequestModel;
 import com.wojewodka.inteca.services.dbo.DatabaseObjectImpl;
 import com.wojewodka.inteca.services.dbo.annotations.DBColumn;
@@ -9,6 +11,7 @@ import com.wojewodka.inteca.services.dbo.annotations.DBTable;
 import com.wojewodka.inteca.services.dbo.annotations.Id;
 
 @DBTable(name = "inteca_fathers")
+@JsonView(ViewScope.Basic.class)
 public class Father extends DatabaseObjectImpl{
 
 	@Id(name = "father_id")

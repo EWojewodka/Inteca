@@ -1,14 +1,16 @@
 package com.wojewodka.inteca.model.family;
 
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonView;
+import com.wojewodka.inteca.api.ViewScope;
+import com.wojewodka.inteca.model.request.ChildRequestModel;
 import com.wojewodka.inteca.services.dbo.DatabaseObjectImpl;
 import com.wojewodka.inteca.services.dbo.annotations.DBColumn;
 import com.wojewodka.inteca.services.dbo.annotations.DBTable;
 import com.wojewodka.inteca.services.dbo.annotations.Id;
 
 @DBTable(name = "inteca_children")
-public class Child extends DatabaseObjectImpl{
+@JsonView(ViewScope.Basic.class)
+public class Child extends DatabaseObjectImpl {
 
 	@Id(name = "child_id")
 	private int id;
@@ -22,21 +24,26 @@ public class Child extends DatabaseObjectImpl{
 	@DBColumn(name = "pesel")
 	private String pesel;
 
-	@DBColumn(name = "born")
-	private Date born;
-
 	@DBColumn(name = "sex")
 	private String sex;
 
 	@DBColumn(name = "family_id")
 	private int familyId;
 
-	public Date getBorn() {
-		return born;
+	public Child() {
 	}
 
-	public void setBorn(Date born) {
-		this.born = born;
+	public Child(ChildRequestModel requestModel) {
+		this(requestModel, null);
+	}
+
+	public Child(ChildRequestModel requestModel, Integer familyId) {
+		this.firstname = requestModel.getFirstname();
+		this.secondName = requestModel.getSecondName();
+		this.pesel = requestModel.getPesel();
+		this.sex = requestModel.getSex();
+		if (familyId != null)
+			this.familyId = familyId;
 	}
 
 	public String getFirstname() {
