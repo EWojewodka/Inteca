@@ -1,7 +1,11 @@
 package com.wojewodka.inteca.services.repository;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+
+import org.springframework.util.ObjectUtils;
 
 public class RepositorySearch {
 
@@ -17,20 +21,35 @@ public class RepositorySearch {
 
 	private String orderColumn;
 
+	private List<SearchJoiner> joiners = new LinkedList<>();
+
+	private String fromTableAlias;
+
 	public boolean isDistinct() {
 		return distinct;
 	}
 
-	public void setDistinct(boolean distinct) {
+	public RepositorySearch setFromTableAlias(String fromTableAlias) {
+		this.fromTableAlias = fromTableAlias;
+		return this;
+	}
+
+	public String getFromTableAlias() {
+		return fromTableAlias;
+	}
+
+	public RepositorySearch setDistinct(boolean distinct) {
 		this.distinct = distinct;
+		return this;
 	}
 
 	public int getLimit() {
 		return limit;
 	}
 
-	public void setLimit(int limit) {
+	public RepositorySearch setLimit(int limit) {
 		this.limit = limit;
+		return this;
 	}
 
 	public OrderByDirection getOrderBy() {
@@ -41,17 +60,34 @@ public class RepositorySearch {
 		return orderColumn;
 	}
 
-	public void setOrderBy(String orderColumn, OrderByDirection orderBy) {
+	public RepositorySearch setOrderBy(String orderColumn, OrderByDirection orderBy) {
 		this.orderBy = orderBy;
 		this.orderColumn = orderColumn;
+		return this;
 	}
 
 	public Map<String, Object> getWhereClause() {
 		return whereClause;
 	}
 
-	public void where(String columnName, Object whereObject) {
+	public RepositorySearch where(String columnName, Object whereObject) {
 		whereClause.put(columnName, whereObject);
+		return this;
+	}
+
+	public RepositorySearch where(String columnName, Object whereObject, boolean skipIfNull) {
+		if (skipIfNull && ObjectUtils.isEmpty(whereObject))
+			return this;
+		return where(columnName, whereObject);
+	}
+
+	public RepositorySearch join(SearchJoiner joiner) {
+		joiners.add(joiner);
+		return this;
+	}
+
+	public List<SearchJoiner> getJoiners() {
+		return joiners;
 	}
 
 }

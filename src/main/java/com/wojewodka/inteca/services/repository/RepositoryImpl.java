@@ -28,7 +28,8 @@ import com.wojewodka.inteca.utils.EntityUtils;
 import com.wojewodka.inteca.utils.StringUtils;
 
 @Repository
-public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.inteca.services.repository.Repository<T> {
+public class RepositoryImpl<T extends DatabaseObject>
+		implements com.wojewodka.inteca.services.repository.Repository<T> {
 
 	@Autowired
 	private DBAWrapper wrapper;
@@ -94,39 +95,56 @@ public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.i
 		return (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
+	// TODO: it's not pretty code, here I should use some tokens or smth like that
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<T> find(RepositorySearch repositorySearch) {
-		List<T> result = new LinkedList<>();
 		EntityMetadata metadata = getMetadata();
 		String distinct = repositorySearch.isDistinct() ? "DISTINCT" : "";
-		// create smth like SELECT DISTINCT[if set] * FROM inteca_families
-		StringBuilder sb = new StringBuilder("SELECT " + distinct + " * FROM " + metadata.getTableName());
+		// create smth like SELECT DISTINCT[if set] * FROM inteca_families and set main table alias
+		String alias = repositorySearch.getFromTableAlias();
+		if (StringUtils.isEmpty(alias))
+			alias = "t1";
+		StringBuilder sb = new StringBuilder(
+				"SELECT " + distinct + " " + alias + ".* FROM " + metadata.getTableName() + " AS " + alias);
+
+		// add joiners
+		List<SearchJoiner> joiners = repositorySearch.getJoiners();
+		if (!joiners.isEmpty()) {
+			for (SearchJoiner joiner : joiners) {
+				sb.append(" " + joiner.getType().getSqlName() +" " +joiner.getRightTable() + " AS " + joiner.getAlias() + " ON "
+						+ joiner.getCondition());
+			}
+		}
+
 		Map<String, Object> whereClause = repositorySearch.getWhereClause();
 
 		// Check and add where cluase.
 		boolean useWhere = !whereClause.isEmpty();
 		if (useWhere) {
 			sb.append(" WHERE ");
-			whereClause.forEach((k, v) -> {
-				sb.append(k + " =? AND ");
-			});
+			for (String fieldName : whereClause.keySet()) {
+				fieldName = fieldName.contains(".") ? fieldName : alias + "." + fieldName;
+				sb.append(fieldName + " =? AND ");
+			}
 			sb.setLength(sb.length() - 4);
 		}
 
+		//set order by column and order direction
 		String orderColumn = repositorySearch.getOrderColumn();
 		OrderByDirection orderByDirection = repositorySearch.getOrderBy();
 		if (!StringUtils.isEmpty(orderColumn) && orderByDirection != null) {
 			sb.append(" ORDER BY " + orderColumn + " " + orderByDirection.getCode());
 		}
 
+		//set limit
 		int limit = repositorySearch.getLimit();
 		if (limit > 0) {
 			sb.append(" LIMIT " + limit);
 		}
 		sb.append(";");
 
-		wrapper.run(con -> {
+		return wrapper.run(con -> {
 			// We have to replace ? with values if where clause is not empty
 			PreparedStatement stmt = con.prepareStatement(sb.toString());
 			LOGGER.info(sb.toString());
@@ -134,13 +152,16 @@ public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.i
 				int i = 1;
 				for (Object obj : whereClause.values()) {
 					stmt.setObject(i, obj, DatabaseFieldProcessor.getSqlType(obj).getVendorTypeNumber());
+					i++;
 				}
 			}
-
+			
 			ResultSet rs = stmt.executeQuery();
 			ResultSetMetaData mt = rs.getMetaData();
 			int columnCount = mt.getColumnCount();
-			if (rs.next()) {
+			List<T> result = new LinkedList<>();
+			//create java object from result set
+			while(rs.next()) {
 				Class<?> genericType = getGenericType();
 				T instance = (T) genericType.newInstance();
 				for (int i = 1; i < columnCount + 1; i++) {
@@ -151,10 +172,9 @@ public class RepositoryImpl<T extends DatabaseObject> implements com.wojewodka.i
 				}
 				result.add(instance);
 			}
-			return null;
+			return result;
 		});
 
-		return result;
 	}
 
 	/**
