@@ -19,7 +19,7 @@ public class FatherRepository extends RepositoryImpl<Father> {
 			.join(new SearchJoiner(Father.class, Family.class, "family", "family.father_id=father.father_id", JoinType.LEFT_JOIN))
 			.join(new SearchJoiner(Father.class, Child.class, "child", "child.family_id=family.family_id", JoinType.LEFT_JOIN))
 			.where("child.first_name", model.getFirstname(), true)
-			.where("child.second_name", model.getSecondName(), true)
+			.where("child.second_name", model.getSecondname(), true)
 			.where("child.pesel", model.getPesel(), true)
 			.where("child.sex", model.getSex(), true);
 		

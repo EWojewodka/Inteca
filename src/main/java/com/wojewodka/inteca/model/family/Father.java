@@ -35,7 +35,7 @@ public class Father extends DatabaseObjectImpl{
 	
 	public Father(FatherRequestModel requestModel) {
 		this.firstname = requestModel.getFirstname();
-		this.secondName = requestModel.getSecondName();
+		this.secondName = requestModel.getSecondname();
 		this.pesel = requestModel.getPesel();
 		this.born = requestModel.getBorn();
 	}

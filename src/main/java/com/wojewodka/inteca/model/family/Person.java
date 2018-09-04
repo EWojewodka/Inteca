@@ -4,18 +4,19 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-
 public class Person {
 
 	@NotNull
 	@NotEmpty
 	private String firstname;
-	
-	private String secondName;
-	
+
 	@NotNull
 	@NotEmpty
-	@Pattern(regexp="[\\d]{11}", message = "Pesel must contains 11 digits.")
+	private String secondname;
+
+	@NotNull
+	@NotEmpty
+	@Pattern(regexp = "[\\d]{11}", message = "Pesel must contains 11 digits.")
 	private String pesel;
 
 	public String getFirstname() {
@@ -34,12 +35,12 @@ public class Person {
 		this.pesel = pesel;
 	}
 
-	public String getSecondName() {
-		return secondName;
+	public String getSecondname() {
+		return secondname;
 	}
 
-	public void setSecondName(String secondName) {
-		this.secondName = secondName;
+	public void setSecondname(String secondname) {
+		this.secondname = secondname;
 	}
 
 }

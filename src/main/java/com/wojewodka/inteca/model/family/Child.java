@@ -39,7 +39,7 @@ public class Child extends DatabaseObjectImpl {
 
 	public Child(ChildRequestModel requestModel, Integer familyId) {
 		this.firstname = requestModel.getFirstname();
-		this.secondName = requestModel.getSecondName();
+		this.secondName = requestModel.getSecondname();
 		this.pesel = requestModel.getPesel();
 		this.sex = requestModel.getSex();
 		if (familyId != null)
