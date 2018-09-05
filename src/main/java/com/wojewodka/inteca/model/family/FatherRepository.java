@@ -13,17 +13,22 @@ import com.wojewodka.inteca.services.repository.SearchJoiner.JoinType;
 @Repository
 public class FatherRepository extends RepositoryImpl<Father> {
 
+	/**
+	 * Return {@link List} of {@link Father}s which has children with specific data.
+	 * 
+	 * @param model
+	 * @return
+	 */
 	public List<Father> findByChildrenData(ChildRequestModel model) {
 		RepositorySearch rs = new RepositorySearch();
-		rs.setFromTableAlias("father")
-			.setDistinct(true)
-			.join(new SearchJoiner(Father.class, Family.class, "family", "family.father_id=father.father_id", JoinType.LEFT_JOIN))
-			.join(new SearchJoiner(Father.class, Child.class, "child", "child.family_id=family.family_id", JoinType.LEFT_JOIN))
-			.where("child.first_name", model.getFirstname(), true)
-			.where("child.second_name", model.getSecondname(), true)
-			.where("child.pesel", model.getPesel(), true)
-			.where("child.sex", model.getSex(), true);
-		
+		rs.setFromTableAlias("father").setDistinct(true)
+				.join(new SearchJoiner(Father.class, Family.class, "family", "family.father_id=father.father_id",JoinType.LEFT_JOIN))
+				.join(new SearchJoiner(Father.class, Child.class, "child", "child.family_id=family.family_id",JoinType.LEFT_JOIN))
+				.where("child.first_name", model.getFirstname(), true)
+				.where("child.second_name", model.getSecondname(), true)
+				.where("child.pesel", model.getPesel(), true)
+				.where("child.sex", model.getSex(), true)
+				.where("child.date_of_birth", model.getDateOfBirth(), true);
 		return find(rs);
 	}
 

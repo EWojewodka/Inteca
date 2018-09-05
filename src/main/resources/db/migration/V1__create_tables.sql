@@ -10,7 +10,7 @@ CREATE TABLE inteca_fathers(
 	first_name		VARCHAR(255) NOT NULL,
 	second_name		VARCHAR(255),
 	pesel			VARCHAR(255),
-	birth_date		DATE NOT NULL
+	date_of_birth	DATE NOT NULL
 );
 
 CREATE TABLE inteca_children(
@@ -18,7 +18,8 @@ CREATE TABLE inteca_children(
 	first_name		VARCHAR(255) NOT NULL,
 	second_name		VARCHAR(255),
 	pesel			VARCHAR(255),
-	sex			VARCHAR(100),
+	sex				VARCHAR(100),
+	date_of_birth	DATE NOT NULL,
 	family_id		INTEGER NOT NULL
 );
 

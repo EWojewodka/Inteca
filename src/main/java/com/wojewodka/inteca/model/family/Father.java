@@ -12,7 +12,7 @@ import com.wojewodka.inteca.services.dbo.annotations.Id;
 
 @DBTable(name = "inteca_fathers")
 @JsonView(ViewScope.Basic.class)
-public class Father extends DatabaseObjectImpl{
+public class Father extends DatabaseObjectImpl {
 
 	@Id(name = "father_id")
 	private int id;
@@ -26,26 +26,26 @@ public class Father extends DatabaseObjectImpl{
 	@DBColumn(name = "pesel")
 	private String pesel;
 
-	@DBColumn(name = "birth_date")
-	private Date born;
+	@DBColumn(name = "date_of_birth")
+	private Date dateOfBirth;
 
 	public Father() {
-		
+
 	}
-	
+
 	public Father(FatherRequestModel requestModel) {
 		this.firstname = requestModel.getFirstname();
 		this.secondName = requestModel.getSecondname();
 		this.pesel = requestModel.getPesel();
-		this.born = requestModel.getBorn();
-	}
-	
-	public Date getBorn() {
-		return born;
+		this.dateOfBirth = requestModel.getDateOfBirth();
 	}
 
-	public void setBorn(Date born) {
-		this.born = born;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public String getFirstname() {

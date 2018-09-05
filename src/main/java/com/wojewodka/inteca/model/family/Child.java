@@ -1,5 +1,7 @@
 package com.wojewodka.inteca.model.family;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.wojewodka.inteca.api.ViewScope;
 import com.wojewodka.inteca.model.request.ChildRequestModel;
@@ -26,6 +28,9 @@ public class Child extends DatabaseObjectImpl {
 
 	@DBColumn(name = "sex")
 	private String sex;
+	
+	@DBColumn(name = "date_of_birth")
+	private Date dateOfBirth;
 
 	@DBColumn(name = "family_id")
 	private int familyId;
@@ -42,6 +47,7 @@ public class Child extends DatabaseObjectImpl {
 		this.secondName = requestModel.getSecondname();
 		this.pesel = requestModel.getPesel();
 		this.sex = requestModel.getSex();
+		this.dateOfBirth = requestModel.getDateOfBirth();
 		if (familyId != null)
 			this.familyId = familyId;
 	}
