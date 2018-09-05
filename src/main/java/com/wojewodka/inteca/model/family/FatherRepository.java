@@ -16,6 +16,7 @@ public class FatherRepository extends RepositoryImpl<Father> {
 	public List<Father> findByChildrenData(ChildRequestModel model) {
 		RepositorySearch rs = new RepositorySearch();
 		rs.setFromTableAlias("father")
+			.setDistinct(true)
 			.join(new SearchJoiner(Father.class, Family.class, "family", "family.father_id=father.father_id", JoinType.LEFT_JOIN))
 			.join(new SearchJoiner(Father.class, Child.class, "child", "child.family_id=family.family_id", JoinType.LEFT_JOIN))
 			.where("child.first_name", model.getFirstname(), true)

@@ -25,6 +25,10 @@ public class Family extends DatabaseObjectImpl {
 	@JsonView(ViewScope.Basic.class)
 	private List<Child> children = new ArrayList<>();
 
+	public Family() {
+		//for ORM
+	}
+	
 	public Family(Father father) {
 		this(father.getId());
 		this.father = father;

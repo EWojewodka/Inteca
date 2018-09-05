@@ -176,7 +176,7 @@ public class RepositoryImpl<T extends DatabaseObject>
 		});
 
 	}
-
+	
 	/**
 	 * Create update query and execute in transaction.
 	 * 
