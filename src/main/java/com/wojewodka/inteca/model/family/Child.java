@@ -2,6 +2,7 @@ package com.wojewodka.inteca.model.family;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.wojewodka.inteca.api.ViewScope;
 import com.wojewodka.inteca.model.request.ChildRequestModel;
@@ -12,7 +13,7 @@ import com.wojewodka.inteca.services.dbo.annotations.Id;
 
 @DBTable(name = "inteca_children")
 @JsonView(ViewScope.Basic.class)
-public class Child extends DatabaseObjectImpl {
+public class Child extends DatabaseObjectImpl implements FamilyMember {
 
 	@Id(name = "child_id")
 	private int id;
@@ -28,8 +29,9 @@ public class Child extends DatabaseObjectImpl {
 
 	@DBColumn(name = "sex")
 	private String sex;
-	
+
 	@DBColumn(name = "date_of_birth")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 
 	@DBColumn(name = "family_id")
@@ -98,6 +100,11 @@ public class Child extends DatabaseObjectImpl {
 
 	public void setFamilyId(int familyId) {
 		this.familyId = familyId;
+	}
+
+	@Override
+	public String getTypeCode() {
+		return "child";
 	}
 
 }

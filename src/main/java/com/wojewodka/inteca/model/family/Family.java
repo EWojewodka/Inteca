@@ -11,7 +11,7 @@ import com.wojewodka.inteca.services.dbo.annotations.DBTable;
 import com.wojewodka.inteca.services.dbo.annotations.Id;
 
 @DBTable(name = "inteca_families")
-public class Family extends DatabaseObjectImpl {
+public class Family extends DatabaseObjectImpl implements FamilyMember {
 
 	@Id(name = "family_id")
 	private int id;
@@ -26,9 +26,9 @@ public class Family extends DatabaseObjectImpl {
 	private List<Child> children = new ArrayList<>();
 
 	public Family() {
-		//for ORM
+		// for ORM
 	}
-	
+
 	public Family(Father father) {
 		this(father.getId());
 		this.father = father;
@@ -65,6 +65,11 @@ public class Family extends DatabaseObjectImpl {
 
 	public void setChildren(List<Child> children) {
 		this.children = children;
+	}
+
+	@Override
+	public String getTypeCode() {
+		return "family";
 	}
 
 }

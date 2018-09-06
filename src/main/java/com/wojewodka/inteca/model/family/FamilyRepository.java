@@ -31,9 +31,29 @@ public class FamilyRepository extends RepositoryImpl<Family> {
 		if (family == null)
 			return null;
 
-		family.setChildren(childRepo.findByFamily(family.getId()));
-		family.setFather(fatherRepo.findById(fatherId));
+		loadChildren(family);
+		loadFather(family);
 		return family;
+	}
+
+	@Override
+	public Family findById(int id) {
+		Family family = super.findById(id);
+		if (family == null)
+			return null;
+
+		loadChildren(family);
+		loadFather(family);
+
+		return family;
+	}
+
+	private void loadFather(Family family) {
+		family.setFather(fatherRepo.findById(family.getFatherId()));
+	}
+
+	private void loadChildren(Family family) {
+		family.setChildren(childRepo.findByFamily(family.getId()));
 	}
 
 }
