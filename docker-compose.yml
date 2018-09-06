@@ -1,6 +1,15 @@
 version: '2'
 
 services: 
+  webapp:
+    image: wojewodkainteca/family:webapp
+    ports:
+      - "127.0.0.1:4200:4200"
+    networks:
+      - pgsql_net
+    links:
+      - api
+
   database:
     image: wojewodkainteca/family:database
     ports: 
@@ -11,13 +20,15 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   api:
-    build: . 
+    image: wojewodkainteca/family:api
+    build:
+      context: .
     depends_on:
       - database
     links:
       - database
     ports:
-      - 8080:8080
+      - "127.0.0.1:8080:8080"
     networks:
       - pgsql_net
       
