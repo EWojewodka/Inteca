@@ -58,6 +58,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		    <groupId>com.dkanejs.maven.plugins</groupId>
+		    <artifactId>docker-compose-maven-plugin</artifactId>
+		    <version>2.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -103,6 +108,24 @@
 					<tag>api</tag>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
  				</configuration>
+			</plugin>
+			 <plugin>
+			    <groupId>com.dkanejs.maven.plugins</groupId>
+			    <artifactId>docker-compose-maven-plugin</artifactId>
+			    <version>1.0.3</version>
+			    <executions>
+				<execution>
+				    <id>up</id>
+				    <phase>install</phase>
+				    <goals>
+					<goal>up</goal>
+				    </goals>
+				    <configuration>
+					<composeFile>${project.basedir}/docker-compose.yml</composeFile>
+					<detachedMode>false</detachedMode>
+				    </configuration>
+				</execution>
+			    </executions>
 			</plugin>
 		</plugins>
 	</build>
